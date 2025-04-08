@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # ignore saved data
-storage/data/*.pkl
+*.pkl
 
 # Distribution / packaging
 .Python
