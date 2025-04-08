@@ -1,62 +1,57 @@
-from processing import *
-from data import *
-from classes import *
+from contacts.contacts_commands import *
+from storage.file_handler_contacts import load_data, save_data
+from helpers.rich_output import success_message, error_message, info_message, print_title
+from rich.prompt import Prompt
+from helpers.help_text import show_help
 
 def main():
     book = load_data()
+    print_title("📔 Welcome to the assistant bot!")
 
-    print("Welcome to the assistant bot!")
     while True:
-        user_input = input("Enter a command: ").strip()
+        user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
         command, args = parse_input(user_input)
 
-        if command in ["close", "exit"]:
+        if command in ["exit", "close"]:
             save_data(book)
-            print("Good bye!")
+            success_message("👋 До побачення!")
             break
 
         elif command == "hello":
-            print("How can I help you?")
+            info_message("🖐 Як я можу вам допомогти?")
 
         elif command == "add":
-            print(add_contact(args, book))
+            result = add_contact(args, book)
+            success_message(result)
 
         elif command == "change":
-            print(change_contact(args, book))# добавити валідацію
+            result = change_contact(args, book)
+            success_message(result)
 
         elif command == "phone":
-            print(show_phone(args, book))
+            result = show_phone(args, book)
+            info_message(result)
 
         elif command == "all":
-            print(show_all(book))
+            show_all(book)
 
         elif command == "add-birthday":
-            print(add_birthday(args, book))
+            result = add_birthday(args, book)
+            success_message(result)
 
         elif command == "show-birthday":
-            print(show_birthday(args, book))
+            result = show_birthday(args, book)
+            info_message(result)
 
         elif command == "birthdays":
-            print(birthdays(args, book))
+            result = birthdays(args, book)
+            info_message(result)
 
         elif command == "help":
-            print("""
-Available commands:
-  add [name] [phone] - Add new contact
-  change [name] [old phone] [new phone] - Edit phone number
-  phone [name] - Show phone numbers for contact
-  all - Show all contacts
-  add-birthday [name] [DD.MM.YYYY] - Add birthday
-  show-birthday [name] - Show contact's birthday
-  birthdays - List upcoming birthdays
-  hello - Say hello
-  exit / close - Exit the program
-    """)
-
+            show_help()
         else:
-            print("Invalid command.")
+            error_message("❌ Невідома команда. Напишіть 'help' для списку команд.")
+
 
 if __name__ == "__main__":
     main()
-
-
