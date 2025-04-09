@@ -38,8 +38,8 @@ def main():
             )
 
             if action == "note":
-                info_message("✍️ Додавання нотаток буде реалізовано пізніше.")
-                continue
+                result = add_notes()
+                info_message(result)
 
             if action == "contact":
                 name, phone = ask_name_and_phone()
