@@ -2,6 +2,7 @@ from contacts.models import AddressBook, Record
 from helpers.decorators import input_error
 from rich.console import Console
 from rich.table import Table
+from helpers.rich_output import success_message, error_message
 
 console = Console()
 
@@ -148,3 +149,32 @@ def findOne(dataFind, param, book):
         if record
         else f"Контакт з параметром '{dataFind}' не знайдено"
     )
+
+
+@input_error
+def deleteOne(param, book, name):
+    match param:
+        case "1":
+            del book.data[name]
+            success_message(f"✅ Контакт {name} успішно видалено!")
+        case "2":
+            record = book.find(name.lower())
+            phone = input("Введіть номер телефону для видалення: ")
+            for record in book.data.values():
+                if any(phone.value in phone.value for phone in record.phones):
+                    try:
+                        record.remove_phone(phone)
+                        success_message(f"✅ Номер {phone} успішно видалено у {name}!")
+                    except ValueError:
+                        error_message(f"❌ Номер {phone} не знайдено у {name}!")
+                    break
+        case "3":
+            record = book.find(name.lower())
+            for record in book.data.values():
+                record.remove_email()
+            success_message(f"✅ Пошти у {name} немає!")
+        case "4":
+            record = book.find(name.lower())
+            for record in book.data.values():
+                record.remove_birthday()
+            success_message(f"✅ День народження у {name} не записаний!")
