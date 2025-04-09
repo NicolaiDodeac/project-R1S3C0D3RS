@@ -1,5 +1,6 @@
 from collections import UserDict
 from datetime import datetime, timedelta
+from .validation import is_valid_email
 
 class Field:
     def __init__(self, value):
@@ -31,12 +32,18 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.birthday = None
+        self.email = None
 
     def add_phone(self, phone):
         self.phones.append(Phone(phone))
 
     def add_birthday(self, value):
         self.birthday = Birthday(value)
+
+    def add_email(self, email):
+        if not is_valid_email(email):
+            raise ValueError("❌ Некоректний email e.g. name1@mail.ua")
+        self.email = email
 
     def edit_phone(self, old, new):
         for i, p in enumerate(self.phones):
