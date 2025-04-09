@@ -67,7 +67,7 @@ def main():
             else:
                 error_message("⚠️ Доступні варіанти: 'contact' або 'note'")
 
-        elif command == "change":
+        elif command == "update-phone":
             result = change_contact(args, book)
             success_message(result)
 
@@ -78,11 +78,11 @@ def main():
         elif command == "all":
             show_all(book)
 
-        elif command == "add-birthday":
+        elif command == "update-birthday":
             result = add_birthday(args, book)
             success_message(result)
 
-        elif command == "add-email":
+        elif command == "update-email":
             result = add_email(args, book)
             success_message(result)
 
@@ -109,7 +109,30 @@ def main():
             dataFind = input("Введіть дані для пошуку: ")
             result = findOne(dataFind, param, book)
             info_message(result)
+        elif command == "delete":
+            name = input("Введіть ім'я контакту для взаємодії: ")
+            record = book.find(name.lower())
+            if record:
+                table = Table(
+                    title="Доступні параметри для видалення:", show_lines=True
+                )
+                table.add_column("Номер команди", style="bold cyan", justify="left")
+                table.add_column("Опис", style="white", justify="left")
+                table.add_row("1", "Видалити цілий контакт")
+                table.add_row("2", "Видалити номер телефону")
+                table.add_row("3", "Видалити пошту")
+                table.add_row("4", "Видалити день народження")
+                console.print(table)
+                param = input("Введіть параметр для видалення: ")
+                if not param or param not in ["1", "2", "3", "4"]:
+                    error_message("❌ Невірний параметр. Спробуйте ще раз.")
+                    continue
+                deleteOne(param, book, name)
+                if not name:
+                    error_message("❌ Введіть ім'я контакту для видалення.")
+                    continue
 
+#  Oleksandr_add_notes
         elif command == "note":
             result = add_notes()
             info_message(result)
@@ -118,6 +141,8 @@ def main():
             result = show_notes()
             info_message(result)
 
+            else:
+                error_message(f"❌ Контакт {name} не знайдено.")
         elif command == "help":
             show_help()
 
