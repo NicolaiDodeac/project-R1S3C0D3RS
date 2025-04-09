@@ -77,5 +77,6 @@ def show_birthday(args, book):
 
 @input_error
 def birthdays(args, book):
-    result = book.get_upcoming_birthdays()
+    days = int(args[0]) if args else 7
+    result = book.get_upcoming_birthdays(days=days)
     return "\n".join(f"{i['name']}: {i['congratulation_date']}" for i in result) or "Немає днів народження найближчим часом"
