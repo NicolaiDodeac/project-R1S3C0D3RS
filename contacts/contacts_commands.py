@@ -5,9 +5,11 @@ from rich.table import Table
 
 console = Console()
 
+
 def parse_input(user_input):
     cmd, *args = user_input.strip().split()
     return cmd.lower(), args
+
 
 @input_error
 def add_contact(args, book: AddressBook):
@@ -23,6 +25,7 @@ def add_contact(args, book: AddressBook):
     record.add_phone(phone)
     return message
 
+
 @input_error
 def change_contact(args, book):
     name, old_phone, new_phone = args
@@ -31,11 +34,17 @@ def change_contact(args, book):
         return f"Оновлено номер для {name}"
     return f"Контакт або номер не знайдено"
 
+
 @input_error
 def show_phone(args, book):
     name = args[0]
     record = book.find(name.lower())
-    return f"{name}: {'; '.join(p.value for p in record.phones)}" if record else f"Контакт '{name}' не знайдено"
+    return (
+        f"{name}: {'; '.join(p.value for p in record.phones)}"
+        if record
+        else f"Контакт '{name}' не знайдено"
+    )
+
 
 @input_error
 def show_all(book):
@@ -53,7 +62,9 @@ def show_all(book):
         try:
             name = record.name.value.capitalize()
             phones = "; ".join(p.value for p in record.phones)
-            bday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "—"
+            bday = (
+                record.birthday.value.strftime("%d.%m.%Y") if record.birthday else "—"
+            )
             email = record.email if record.email else "—"
             table.add_row(name, phones, bday, email)
         except Exception as e:
@@ -71,8 +82,9 @@ def add_birthday(args, book):
         return f"Додано день народження для {name}"
     return f"Контакт '{name}' не знайдено"
 
+
 @input_error
-def  add_email(args, book):
+def add_email(args, book):
     name, email = args
     record = book.find(name.lower())
     if record:
@@ -80,14 +92,59 @@ def  add_email(args, book):
         return f"📧 Email для {name} оновлено: {email}"
     return f"Контакт '{name}' не знайдено"
 
+
 @input_error
 def show_birthday(args, book):
     name = args[0]
     record = book.find(name.lower())
-    return f"{name}: {record.birthday.value.strftime('%d.%m.%Y')}" if record and record.birthday else f"Немає дати народження"
+    return (
+        f"{name}: {record.birthday.value.strftime('%d.%m.%Y')}"
+        if record and record.birthday
+        else f"Немає дати народження"
+    )
+
 
 @input_error
 def birthdays(args, book):
     days = int(args[0]) if args else 7
     result = book.get_upcoming_birthdays(days=days)
-    return "\n".join(f"{i['name']}: {i['congratulation_date']}" for i in result) or "Немає днів народження найближчим часом"
+    return (
+        "\n".join(f"{i['name']}: {i['congratulation_date']}" for i in result)
+        or "Немає днів народження найближчим часом"
+    )
+
+
+@input_error
+def findOne(dataFind, param, book):
+    record = None
+    match param:
+        case "1":
+            record = book.find(dataFind.lower())
+        case "2":
+            for contact in book.data.values():
+                if any(dataFind in phone.value for phone in contact.phones):
+                    record = contact
+                    break
+        case "3":
+            for contact in book.data.values():
+                if dataFind in contact.email:
+                    print(contact.email)
+                    record = contact
+                    break
+        case "4":
+            for contact in book.data.values():
+                if (
+                    contact.birthday
+                    and contact.birthday.value.strftime("%d.%m.%Y") == dataFind
+                ):
+
+                    record = contact
+                    break
+        case _:
+            return "❌ Невірний параметр для пошуку"
+
+    return (
+        f"Контакт знайдено: {record}"
+        if record
+        else f"Контакт з параметром '{dataFind}' не знайдено"
+    )
