@@ -131,7 +131,8 @@ def main():
                 if not name:
                     error_message("❌ Введіть ім'я контакту для видалення.")
                     continue
-
+            else:
+                error_message(f"❌ Контакт {name} не знайдено.")
 #  Oleksandr_add_notes
         elif command == "note":
             result = add_notes()
@@ -141,8 +142,7 @@ def main():
             result = show_notes()
             info_message(result)
 
-            else:
-                error_message(f"❌ Контакт {name} не знайдено.")
+        
         elif command == "help":
             show_help()
 
