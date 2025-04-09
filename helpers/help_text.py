@@ -17,5 +17,6 @@ def show_help():
     table.add_row("birthdays", "Показати дні народження на наступному тижні")
     table.add_row("hello", "Привітатися з ботом")
     table.add_row("exit / close", "Вийти з програми")
+    table.add_row("add-email [name] [email] — додати або змінити email")
 
     console.print(table)

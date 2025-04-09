@@ -3,19 +3,21 @@ from helpers.decorators import input_error
 from rich.console import Console
 from rich.table import Table
 
+console = Console()
+
 def parse_input(user_input):
     cmd, *args = user_input.strip().split()
     return cmd.lower(), args
 
 @input_error
 def add_contact(args, book: AddressBook):
-    if len(args) < 2:
+    if len(args) < 1:
         return "Введіть ім'я і телефон"
     name, phone, *_ = args
     record = book.find(name.lower())
     message = "Контакт оновлено."
     if not record:
-        record = Record(name)
+        record = Record(name.capitalize())
         book.add_record(record)
         message = f"Додано новий контакт {name}"
     record.add_phone(phone)
@@ -35,11 +37,6 @@ def show_phone(args, book):
     record = book.find(name.lower())
     return f"{name}: {'; '.join(p.value for p in record.phones)}" if record else f"Контакт '{name}' не знайдено"
 
-from rich.console import Console
-from rich.table import Table
-
-console = Console()
-
 @input_error
 def show_all(book):
     if not book.data:
@@ -47,18 +44,23 @@ def show_all(book):
         return
 
     table = Table(title="📒 Список контактів", show_lines=True)
-
     table.add_column("Ім’я", style="bold magenta")
     table.add_column("Телефони", style="green")
     table.add_column("День народження", style="cyan")
+    table.add_column("Email", style="blue")
 
     for record in book.data.values():
-        name = record.name.value
-        phones = "; ".join(p.value for p in record.phones)
-        bday = record.birthday.value.strftime("%d.%m.%Y") if record.birthday else "—"
-        table.add_row(name, phones, bday)
+        try:
+            name = record.name.value.capitalize()
+            phones = "; ".join(p.value for p in record.phones)
+            bday = record.birthday.value.strftime('%d.%m.%Y') if record.birthday else "—"
+            email = record.email if record.email else "—"
+            table.add_row(name, phones, bday, email)
+        except Exception as e:
+            console.print(f"[bold red]⚠️ Помилка при обробці запису: {e}[/bold red]")
 
     console.print(table)
+
 
 @input_error
 def add_birthday(args, book):
@@ -67,6 +69,15 @@ def add_birthday(args, book):
     if record:
         record.add_birthday(bday)
         return f"Додано день народження для {name}"
+    return f"Контакт '{name}' не знайдено"
+
+@input_error
+def  add_email(args, book):
+    name, email = args
+    record = book.find(name.lower())
+    if record:
+        record.add_email(email)
+        return f"📧 Email для {name} оновлено: {email}"
     return f"Контакт '{name}' не знайдено"
 
 @input_error
