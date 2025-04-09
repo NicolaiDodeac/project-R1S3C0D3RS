@@ -1,9 +1,15 @@
 from contacts.contacts_commands import *
 from storage.file_handler_contacts import load_data, save_data
-from helpers.rich_output import success_message, error_message, info_message, print_title
+from helpers.rich_output import (
+    success_message,
+    error_message,
+    info_message,
+    print_title,
+)
 from rich.prompt import Prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
+
 
 def main():
     book = load_data()
@@ -22,7 +28,13 @@ def main():
             info_message("🖐 Як я можу вам допомогти?")
 
         elif command == "add":
-            action = Prompt.ask("[bold green]Що ви хочете додати? ('contact' або 'note')[/bold green]").strip().lower()
+            action = (
+                Prompt.ask(
+                    "[bold green]Що ви хочете додати? ('contact' або 'note')[/bold green]"
+                )
+                .strip()
+                .lower()
+            )
 
             if action == "note":
                 info_message("✍️ Додавання нотаток буде реалізовано пізніше.")
@@ -41,7 +53,7 @@ def main():
 
                 birthday = ask_birthday()
                 if birthday:
-                    record.add_birthday(birthday.strftime('%d.%m.%Y'))
+                    record.add_birthday(birthday.strftime("%d.%m.%Y"))
 
                 email = ask_email()
                 if email:
@@ -66,7 +78,7 @@ def main():
         elif command == "add-birthday":
             result = add_birthday(args, book)
             success_message(result)
-        
+
         elif command == "add-email":
             result = add_email(args, book)
             success_message(result)
@@ -77,6 +89,22 @@ def main():
 
         elif command == "birthdays":
             result = birthdays(args, book)
+            info_message(result)
+        elif command == "find":
+            table = Table(title="Доступні параметри для пошуком:", show_lines=True)
+            table.add_column("Номер команди", style="bold cyan", justify="left")
+            table.add_column("Опис", style="white", justify="left")
+            table.add_row("1", "Пошук за іменем або частиною імені (name)")
+            table.add_row("2", "Пошук за номером телефону або частиною номера (phone)")
+            table.add_row("3", "Пошук за поштою або частиною пошти (email)")
+            table.add_row("4", "Пошук за днем народження (birthday)")
+            console.print(table)
+            param = input("Введіть параметр для пошуку: ")
+            if not param or param not in ["1", "2", "3", "4"]:
+                error_message("❌ Невірний параметр. Спробуйте ще раз.")
+                continue
+            dataFind = input("Введіть дані для пошуку: ")
+            result = findOne(dataFind, param, book)
             info_message(result)
 
         elif command == "help":
