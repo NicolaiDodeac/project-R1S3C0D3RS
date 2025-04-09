@@ -9,6 +9,7 @@ from helpers.rich_output import (
 from rich.prompt import Prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
+from notes.notes_commands import add_notes, show_notes
 
 
 def main():
@@ -105,6 +106,14 @@ def main():
                 continue
             dataFind = input("Введіть дані для пошуку: ")
             result = findOne(dataFind, param, book)
+            info_message(result)
+
+        elif command == "note":
+            result = add_notes()
+            info_message(result)
+
+        elif command == "show-note":
+            result = show_notes()
             info_message(result)
 
         elif command == "help":
