@@ -75,7 +75,7 @@ class Record:
 
     def __str__(self):
         bday = f", birthday: {self.birthday}" if self.birthday else ""
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}{bday}"
+        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}{bday}, email: {self.email}"
 
 
 class AddressBook(UserDict):
