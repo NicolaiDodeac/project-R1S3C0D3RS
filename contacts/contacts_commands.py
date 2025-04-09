@@ -133,22 +133,39 @@ def findOne(dataFind, param, book):
                     record = contact
                     break
         case "4":
+            res = []
             for contact in book.data.values():
                 if (
                     contact.birthday
                     and contact.birthday.value.strftime("%d.%m.%Y") == dataFind
                 ):
 
-                    record = contact
-                    break
+                    res.append(contact)
+            record = res
+
         case _:
             return "❌ Невірний параметр для пошуку"
-
-    return (
-        f"Контакт знайдено: {record}"
-        if record
-        else f"Контакт з параметром '{dataFind}' не знайдено"
-    )
+    table = Table(title="📒 Список контактів", show_lines=True)
+    table.add_column("Ім’я", style="bold magenta")
+    table.add_column("Телефони", style="green")
+    table.add_column("День народження", style="cyan")
+    table.add_column("Email", style="blue")
+    if isinstance(record, list):
+        if record:
+            for r in record:
+                name = r.name.value.capitalize()
+                phones = "; ".join(p.value for p in r.phones)
+                bday = r.birthday.value.strftime("%d.%m.%Y") if r.birthday else "—"
+                email = r.email if r.email else "—"
+                table.add_row(name, phones, bday, email)
+            return table
+        return f"Контакти з параметром '{dataFind}' не знайдено"
+    else:
+        return (
+            f"Контакт знайдено: {record}"
+            if record
+            else f"Контакт з параметром '{dataFind}' не знайдено"
+        )
 
 
 @input_error
