@@ -12,8 +12,6 @@ from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from notes.notes_commands import add_notes, show_notes
 
 
-
-
 def main():
     book = load_data()
     print_title("📔 Welcome to the assistant bot!")
@@ -38,7 +36,7 @@ def main():
                 .strip()
                 .lower()
             )
-            
+
             if action == "note":
                 result = add_notes()
                 info_message(result)
@@ -108,7 +106,7 @@ def main():
                 continue
             dataFind = input("Введіть дані для пошуку: ")
             result = findOne(dataFind, param, book)
-            info_message(result)
+            console.print(result)
         elif command == "delete":
             name = input("Введіть ім'я контакту для взаємодії: ")
             record = book.find(name.lower())
@@ -133,7 +131,7 @@ def main():
                     continue
             else:
                 error_message(f"❌ Контакт {name} не знайдено.")
-#  Oleksandr_add_notes
+        #  Oleksandr_add_notes
         elif command == "note":
             result = add_notes()
             info_message(result)
@@ -142,7 +140,6 @@ def main():
             result = show_notes()
             info_message(result)
 
-        
         elif command == "help":
             show_help()
 
@@ -151,5 +148,5 @@ def main():
 
 
 if __name__ == "__main__":
-   
+
     main()
