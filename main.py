@@ -9,6 +9,9 @@ from helpers.rich_output import (
 from rich.prompt import Prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
+from notes.notes_commands import add_notes, show_notes
+
+
 
 
 def main():
@@ -35,10 +38,10 @@ def main():
                 .strip()
                 .lower()
             )
-
+            
             if action == "note":
-                info_message("✍️ Додавання нотаток буде реалізовано пізніше.")
-                continue
+                result = add_notes()
+                info_message(result)
 
             if action == "contact":
                 name, phone = ask_name_and_phone()
@@ -128,9 +131,18 @@ def main():
                 if not name:
                     error_message("❌ Введіть ім'я контакту для видалення.")
                     continue
-
             else:
                 error_message(f"❌ Контакт {name} не знайдено.")
+#  Oleksandr_add_notes
+        elif command == "note":
+            result = add_notes()
+            info_message(result)
+
+        elif command == "show-note":
+            result = show_notes()
+            info_message(result)
+
+        
         elif command == "help":
             show_help()
 
@@ -139,4 +151,5 @@ def main():
 
 
 if __name__ == "__main__":
+   
     main()
