@@ -1,10 +1,11 @@
 from notes.models import Note
 from datetime import datetime
+from rich.prompt import Prompt
 
 notes = []
 
 def add_notes ():
-    name_note = input("Введіть назву нотатки: ")
+    name_note = Prompt.ask("[bold green]Введіть назву нотатки:[/bold green]")
     body_note = input("Введіть текст нотатки: ")
     tag_note = input("Чи хочете додати тег для своєї нотакти? Y/N: ")
 
