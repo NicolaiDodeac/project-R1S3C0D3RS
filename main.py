@@ -12,6 +12,8 @@ from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from notes.notes_commands import add_notes, show_notes
 
 
+
+
 def main():
     book = load_data()
     print_title("📔 Welcome to the assistant bot!")
@@ -36,7 +38,7 @@ def main():
                 .strip()
                 .lower()
             )
-
+            
             if action == "note":
                 result = add_notes()
                 info_message(result)
@@ -124,4 +126,5 @@ def main():
 
 
 if __name__ == "__main__":
+   
     main()
