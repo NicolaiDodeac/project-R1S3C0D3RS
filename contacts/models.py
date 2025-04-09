@@ -2,6 +2,7 @@ from collections import UserDict
 from datetime import datetime, timedelta
 from .validation import is_valid_email
 
+
 class Field:
     def __init__(self, value):
         self.value = value
@@ -9,15 +10,18 @@ class Field:
     def __str__(self):
         return str(self.value) if self.value else "No value"
 
+
 class Name(Field):
     def __init__(self, value):
         super().__init__(value.lower())
+
 
 class Phone(Field):
     def __init__(self, value):
         if not value.isdigit() or len(value) != 10:
             raise ValueError("Phone number must contain 10 digits")
         super().__init__(value)
+
 
 class Birthday(Field):
     def __init__(self, value):
@@ -26,6 +30,7 @@ class Birthday(Field):
             super().__init__(bday)
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
+
 
 class Record:
     def __init__(self, name):
@@ -53,7 +58,17 @@ class Record:
         return False
 
     def remove_phone(self, phone):
-        self.phones = [p for p in self.phones if p.value != phone]
+        for p in self.phones[:]:
+            if p.value == phone:
+                self.phones.remove(p)
+                return
+        raise ValueError("Phone number not found")
+
+    def remove_birthday(self):
+        self.birthday = None
+
+    def remove_email(self):
+        self.email = None
 
     def find_phone(self, number):
         return next((p for p in self.phones if p.value == number), None)
@@ -61,6 +76,7 @@ class Record:
     def __str__(self):
         bday = f", birthday: {self.birthday}" if self.birthday else ""
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}{bday}"
+
 
 class AddressBook(UserDict):
     def add_record(self, record):
@@ -85,8 +101,10 @@ class AddressBook(UserDict):
                 if 0 <= (bday - today).days <= days:
                     if bday.weekday() >= 5:
                         bday += timedelta(days=(7 - bday.weekday()))
-                    upcoming.append({
-                        "name": record.name.value,
-                        "congratulation_date": bday.strftime("%d.%m.%Y")
-                    })
+                    upcoming.append(
+                        {
+                            "name": record.name.value,
+                            "congratulation_date": bday.strftime("%d.%m.%Y"),
+                        }
+                    )
         return upcoming
