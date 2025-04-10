@@ -11,9 +11,9 @@ notes = load_notes()
 
 
 def add_notes():
-    name_note = Prompt.ask("[bold green]Введіть назву нотатки[/bold green] ")
-    body_note = Prompt.ask("[bold blue]Введіть текст нотатки[/bold blue] ")
-    tag_note = Prompt.ask("[bold green]Введіть тег або 'skip'[/bold green] ")
+    name_note = Prompt.ask("[bold green]Введіть назву нотатки[/bold green]")
+    body_note = Prompt.ask("[bold blue]Введіть текст нотатки[/bold blue]")
+    tag_note = Prompt.ask("[bold green]Введіть тег або 'skip'[/bold green]")
 
     if tag_note.lower() == "skip":
         tag_note = None
