@@ -9,34 +9,34 @@ from helpers.rich_output import console
 console = Console()
 notes = load_notes()
 
-def add_notes ():
+def add_notes():
     name_note = Prompt.ask("[bold green]Введіть назву нотатки:[/bold green] ")
     body_note = Prompt.ask("[bold blue]Введіть текст нотатки:[/bold blue] ")
     tag_note = Prompt.ask("[bold green]Введіть тег або 'skip':[/bold green] ")
 
     if tag_note.lower() == "skip":
         tag_note = None
-        note = Note(name_note, body_note, tag_note)
-        notes.append(note)
     else:
-        note = Note(name_note, body_note, tag_note)
-        notes.append(note)
+        tag_note = tag_note.strip()
+        if not tag_note.startswith("#"):
+            tag_note = f"#{tag_note}"
+
+    note = Note(name_note, body_note, tag_note)
+    notes.append(note)
+    save_notes(notes)
     return f"Нотатку '{name_note}' успішно додано!"
-
-   
-
 
 def show_notes():
     if not notes:
-        print("У тебе ще немає жодної нотатки")
-    else:
-        table = Table(title="Перелік твоїх нотаток", show_lines=True)
+        return "У тебе ще немає жодної нотатки"
+
+    table = Table(title="Перелік твоїх нотаток", show_lines=True)
 
     table.add_column("№п/п", style="white", justify="center")
-    table.add_column("Назва", style="cyan")
-    table.add_column("Текст", style="white")
-    table.add_column("Тег", style="magenta")
-    table.add_column("Дата створення", style="green")
+    table.add_column("Назва", style="cyan", justify="center")
+    table.add_column("Текст", style="white", justify="center")
+    table.add_column("Тег", style="blue", justify="center")
+    table.add_column("Дата створення", style="green", justify="center")
 
     for index, note in enumerate(notes, start=1):
         table.add_row(
