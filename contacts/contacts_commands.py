@@ -177,7 +177,7 @@ def findOne(dataFind, param, book):
 def deleteOne(param, book, name):
     match param:
         case "1":
-            del book.data[name]
+            del book.data[name.lower()]
             success_message(f"✅ Контакт {name} успішно видалено!")
         case "2":
             record = book.find(name.lower())
