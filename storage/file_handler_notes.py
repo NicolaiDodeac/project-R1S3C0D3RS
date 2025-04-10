@@ -14,7 +14,7 @@ def save_notes(notes, filename=FILENAME):
                 note.name_note,
                 note.body_note,
                 note.tag_note or "",
-                note.data_created.strftime("%Y-%m-%d %H:%M")
+                note.date_created.strftime("%Y-%m-%d %H:%M")
             ])
 
 def load_notes(filename=FILENAME):
@@ -29,6 +29,6 @@ def load_notes(filename=FILENAME):
                 body_note=row["Нотатка"],
                 tag_note=row["Тег"] if row["Тег"] else None
             )
-            note.data_created = datetime.strptime(row["Дата"], "%Y-%m-%d %H:%M")
+            note.date_created = datetime.strptime(row["Дата"], "%Y-%m-%d %H:%M")
             notes.append(note)
     return notes
