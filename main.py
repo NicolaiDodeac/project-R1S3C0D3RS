@@ -144,7 +144,36 @@ def main():
             show_help()
 
         else:
-            error_message("❌ Невідома команда. Напишіть 'help' для списку команд.")
+            commands = [
+                "hello",
+                "add",
+                "update-phone",
+                "phone",
+                "all",
+                "update-birthday",
+                "update-email",
+                "show-birthday",
+                "birthdays",
+                "find",
+                "delete",
+                "note",
+                "show-note",
+                "help",
+                "exit",
+            ]
+
+            matches = [(comm, len(set(comm) & set(command))) for comm in commands]
+            best_match = max(matches, key=lambda x: x[1], default=None)
+
+            if best_match and best_match[1] > 0:
+                suggestion = best_match[0]
+                error_message(
+                    f"❌ Невірна команда. Можливо, ви мали на увазі '{suggestion}'?"
+                )
+            else:
+                error_message(
+                    "❌ Невірна команда. Використайте 'help' для перегляду доступних команд."
+                )
 
 
 if __name__ == "__main__":

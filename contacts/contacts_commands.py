@@ -120,18 +120,23 @@ def findOne(dataFind, param, book):
     record = None
     match param:
         case "1":
-            record = book.find(dataFind.lower())
+            res = []
+            res.append(book.find(dataFind.lower()))
+            record = res
         case "2":
+            res = []
             for contact in book.data.values():
                 if any(dataFind in phone.value for phone in contact.phones):
-                    record = contact
-                    break
+                    res.append(contact)
+                record = res
         case "3":
+            res = []
             for contact in book.data.values():
                 if dataFind in contact.email:
                     print(contact.email)
-                    record = contact
-                    break
+                    res.append(contact)
+
+                record = res
         case "4":
             res = []
             for contact in book.data.values():
