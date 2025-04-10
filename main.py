@@ -147,19 +147,19 @@ def main():
             commands = [
                 "hello",
                 "add",
-                "update-phone",
                 "phone",
                 "all",
-                "update-birthday",
-                "update-email",
-                "show-birthday",
                 "birthdays",
                 "find",
                 "delete",
                 "note",
-                "show-note",
                 "help",
+                "show-note",
+                "update-birthday",
+                "show-birthday",
                 "exit",
+                "update-phone",
+                "update-email",
             ]
 
             matches = [(comm, len(set(comm) & set(command))) for comm in commands]
