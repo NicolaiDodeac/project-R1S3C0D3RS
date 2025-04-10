@@ -41,7 +41,7 @@ def main():
                 result = add_notes()
                 info_message(result)
 
-            if action == "contact":
+            elif action == "contact":
                 name, phone = ask_name_and_phone()
                 if not name:
                     continue
@@ -135,6 +135,7 @@ def main():
         elif command == "note":
             result = add_notes()
             info_message(result)
+            success_message(f"✅ Нотатка {name_note} успішно збережено!")
 
         elif command == "show-note":
             result = show_notes()

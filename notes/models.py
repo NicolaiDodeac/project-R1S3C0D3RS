@@ -9,9 +9,11 @@ class Note:
 
     def __str__(self):
         if self.tag_note is None:
-            return f"Нотатка {self.name_note}, створена {self.data_created} - {self.body_note}"
+            return f"Нотатка {self.name_note}, створена {self.date_created.strftime('%d.%m.%Y')} - {self.body_note}"
         else:
-            return f"Нотатка {self.name_note}  і тегом {self.tag_note}, створена {self.data_created} - {self.body_note}"
+            return f"Нотатка {self.name_note}  і тегом {self.tag_note}, створена {self.data_created.strftime('%d.%m.%Y')} - {self.body_note}"
+    
+
     
 
 

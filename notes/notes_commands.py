@@ -3,34 +3,48 @@ from datetime import datetime
 from rich.prompt import Prompt
 from storage.file_handler_notes import save_notes, load_notes
 from rich.console import Console
+from rich.table import Table
+from helpers.rich_output import console
 
 console = Console()
 notes = load_notes()
 
 def add_notes ():
-    name_note = Prompt.ask("[bold green]Введіть назву нотатки:[/bold green]")
-    body_note = input("Введіть текст нотатки: ")
-    tag_note = input("Чи хочете додати тег для своєї нотакти? Y/N: ")
+    name_note = Prompt.ask("[bold green]Введіть назву нотатки:[/bold green] ")
+    body_note = Prompt.ask("[bold blue]Введіть текст нотатки:[/bold blue] ")
+    tag_note = Prompt.ask("[bold green]Введіть тег або 'skip':[/bold green] ")
 
-    if tag_note.lower() == "y":
-        tag_note = input(f"Введіть світ тег для нотатки {name_note} ")
-    else:
+    if tag_note.lower() == "skip":
         tag_note = None
+        note = Note(name_note, body_note, tag_note)
+        notes.append(note)
+    else:
+        note = Note(name_note, body_note, tag_note)
+        notes.append(note)
+    return f"Нотатку '{name_note}' успішно додано!"
 
-    # note_dict ={"Ім'я нотатки": name_note,
-    #             "Нотатка": body_note,
-    #             "Тег": tag_note,
-    #             "Додано": datetime.now()
-    # }
-    # notes.append(note_dict)
-    note = Note(name_note, body_note, tag_note)
-    notes.append(note)
-    save_notes(notes)
+   
 
-    return f"✅ Нотатку '{name_note}' успішно збережено!"
 
 def show_notes():
     if not notes:
         print("У тебе ще немає жодної нотатки")
     else:
-        for note in notes: print(note)
+        table = Table(title="Перелік твоїх нотаток", show_lines=True)
+
+    table.add_column("№п/п", style="white", justify="center")
+    table.add_column("Назва", style="cyan")
+    table.add_column("Текст", style="white")
+    table.add_column("Тег", style="magenta")
+    table.add_column("Дата створення", style="green")
+
+    for index, note in enumerate(notes, start=1):
+        table.add_row(
+            str(index),
+            note.name_note,
+            note.body_note,
+            note.tag_note if note.tag_note else "-",
+            note.date_created.strftime("%d.%m.%Y")
+        )
+
+    return table
