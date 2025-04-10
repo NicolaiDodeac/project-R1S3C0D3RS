@@ -1,8 +1,11 @@
 from notes.models import Note
 from datetime import datetime
 from rich.prompt import Prompt
+from storage.file_handler_notes import save_notes, load_notes
+from rich.console import Console
 
-notes = []
+console = Console()
+notes = load_notes()
 
 def add_notes ():
     name_note = Prompt.ask("[bold green]Введіть назву нотатки:[/bold green]")
@@ -22,6 +25,9 @@ def add_notes ():
     # notes.append(note_dict)
     note = Note(name_note, body_note, tag_note)
     notes.append(note)
+    save_notes(notes)
+
+    return f"✅ Нотатку '{name_note}' успішно збережено!"
 
 def show_notes():
     if not notes:
