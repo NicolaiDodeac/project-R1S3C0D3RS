@@ -7,17 +7,27 @@ from helpers.rich_output import (
     print_title,
 )
 from rich.prompt import Prompt
+from rich import print
+from prompt_toolkit import prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from notes.notes_commands import add_notes, show_notes
-
+from helpers.autocomplete import get_user_command
+from helpers.handlers import handle_update_phone,handle_update_email, handle_show_birthday, handle_add_birthday, handle_add_phone
 
 def main():
     book = load_data()
     print_title("📔 Welcome to the assistant bot!")
 
     while True:
-        user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
+        print("[bold green](TAB для підказки)[/bold green]") 
+        # user_input = prompt(">> ", completer=command_completer)   
+        user_input = get_user_command()
+  
+        # user_input = session.prompt(">> Введіть команду: ")
+
+
+        # user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
         command, args = parse_input(user_input)
 
         if command in ["exit", "close"]:
@@ -65,9 +75,14 @@ def main():
             else:
                 error_message("⚠️ Доступні варіанти: 'contact' або 'note'")
 
+        # elif command == "update-phone":
+        #     result = change_contact(args, book)
+        #     success_message(result)
+        elif command == "add-phone":
+            handle_add_phone(book)
+
         elif command == "update-phone":
-            result = change_contact(args, book)
-            success_message(result)
+            handle_update_phone(book)
 
         elif command == "phone":
             result = show_phone(args, book)
@@ -77,16 +92,15 @@ def main():
             show_all(book)
 
         elif command == "update-birthday":
-            result = add_birthday(args, book)
-            success_message(result)
+            handle_add_birthday(book)
 
         elif command == "update-email":
-            result = add_email(args, book)
-            success_message(result)
+            handle_update_email(book)
+        #     result = add_email(args, book)
+        #     success_message(result)
 
         elif command == "show-birthday":
-            result = show_birthday(args, book)
-            info_message(result)
+           handle_show_birthday(book)
 
         elif command == "birthdays":
             result = birthdays(args, book)
