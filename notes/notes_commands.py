@@ -9,10 +9,11 @@ from helpers.rich_output import console
 console = Console()
 notes = load_notes()
 
+
 def add_notes():
-    name_note = Prompt.ask("[bold green]Введіть назву нотатки:[/bold green] ")
-    body_note = Prompt.ask("[bold blue]Введіть текст нотатки:[/bold blue] ")
-    tag_note = Prompt.ask("[bold green]Введіть тег або 'skip':[/bold green] ")
+    name_note = Prompt.ask("[bold green]Введіть назву нотатки[/bold green]")
+    body_note = Prompt.ask("[bold blue]Введіть текст нотатки[/bold blue]")
+    tag_note = Prompt.ask("[bold green]Введіть тег або 'skip'[/bold green]")
 
     if tag_note.lower() == "skip":
         tag_note = None
@@ -25,6 +26,7 @@ def add_notes():
     notes.append(note)
     save_notes(notes)
     return f"Нотатку '{name_note}' успішно додано!"
+
 
 def show_notes():
     if not notes:
@@ -44,7 +46,7 @@ def show_notes():
             note.name_note,
             note.body_note,
             note.tag_note if note.tag_note else "-",
-            note.date_created.strftime("%d.%m.%Y")
+            note.date_created.strftime("%d.%m.%Y"),
         )
 
     return table

@@ -148,19 +148,19 @@ def main():
             commands = [
                 "hello",
                 "add",
-                "update-phone",
                 "phone",
                 "all",
-                "update-birthday",
-                "update-email",
-                "show-birthday",
                 "birthdays",
                 "find",
                 "delete",
                 "note",
-                "show-note",
                 "help",
+                "show-note",
+                "update-birthday",
+                "show-birthday",
                 "exit",
+                "update-phone",
+                "update-email",
             ]
 
             matches = [(comm, len(set(comm) & set(command))) for comm in commands]
@@ -169,7 +169,7 @@ def main():
             if best_match and best_match[1] > 0:
                 suggestion = best_match[0]
                 error_message(
-                    f"❌ Невірна команда. Можливо, ви мали на увазі '{suggestion}'?"
+                    f"❌ Невірна команда. Можливо, ви мали на увазі '[bold green]{suggestion}[/bold green]'?"
                 )
             else:
                 error_message(
