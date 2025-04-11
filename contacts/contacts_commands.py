@@ -27,6 +27,17 @@ def add_contact(args, book: AddressBook):
     record.add_phone(phone)
     return message
 
+def add_phone_command(args, book: AddressBook):
+    name, new_phone = args
+    record = book.find(name.lower())
+    if not record:
+        return f"Контакт '{name}' не знайдено"
+    try:
+        record.add_phone(new_phone)
+        return f"📞 Додано номер {new_phone} до {name}"
+    except ValueError:
+        return "❌ Номер телефону повинен містити 10 цифр"
+
 
 @input_error
 def change_contact(args, book):
@@ -43,10 +54,9 @@ def show_phone(args, book):
     record = book.find(name.lower())
     return (
         f"{name}: {'; '.join(p.value for p in record.phones)}"
-        if record
+        if record and record.phones
         else f"Контакт '{name}' не знайдено"
     )
-
 
 @input_error
 def show_all(book):
@@ -85,14 +95,17 @@ def add_birthday(args, book):
     return f"Контакт '{name}' не знайдено"
 
 
-@input_error
 def add_email(args, book):
     name, email = args
     record = book.find(name.lower())
-    if record:
+    if not record:
+        return f"Контакт '{name}' не знайдено"
+    
+    try:
         record.add_email(email)
         return f"📧 Email для {name} оновлено: {email}"
-    return f"Контакт '{name}' не знайдено"
+    except ValueError as e:
+        return str(e)
 
 
 @input_error

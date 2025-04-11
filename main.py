@@ -7,10 +7,15 @@ from helpers.rich_output import (
     print_title,
 )
 from rich.prompt import Prompt
+from rich import print
+from prompt_toolkit import prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from notes.notes_commands import add_notes, show_notes
+from helpers.autocomplete import get_user_command
+from helpers.handlers import handle_update_phone,handle_update_email, handle_show_birthday, handle_add_birthday, handle_add_phone, handle_show_phone
 from notes.notes_commands import add_notes, show_notes, find_note
+from helpers.constants import COMMANDS
 
 
 def main():
@@ -18,7 +23,10 @@ def main():
     print_title("📔 Welcome to the assistant bot!")
 
     while True:
-        user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
+        print("[bold green](TAB для підказки)[/bold green]") 
+        user_input = get_user_command()
+
+        # user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
         command, args = parse_input(user_input)
 
         if command in ["exit", "close"]:
@@ -61,37 +69,36 @@ def main():
                 if email:
                     record.add_email(email)
 
-                save_data(book)  # Одразу зберігаємо після успішного додавання
+                save_data(book)
                 success_message(f"✅ Контакт {name} успішно збережено!")
             else:
                 error_message("⚠️ Доступні варіанти: 'contact' або 'note'")
 
+        elif command == "add-phone":
+            handle_add_phone(book)
+
         elif command == "update-phone":
-            result = change_contact(args, book)
-            success_message(result)
+            handle_update_phone(book)
 
         elif command == "phone":
-            result = show_phone(args, book)
-            info_message(result)
+            handle_show_phone(book)
 
         elif command == "all":
             show_all(book)
 
         elif command == "update-birthday":
-            result = add_birthday(args, book)
-            success_message(result)
+            handle_add_birthday(book)
 
         elif command == "update-email":
-            result = add_email(args, book)
-            success_message(result)
+            handle_update_email(book)
 
         elif command == "show-birthday":
-            result = show_birthday(args, book)
-            info_message(result)
+           handle_show_birthday(book)
 
         elif command == "birthdays":
             result = birthdays(args, book)
             info_message(result)
+
         elif command == "find":
             table = Table(title="Доступні параметри для пошуком:", show_lines=True)
             table.add_column("Номер команди", style="bold cyan", justify="left")
@@ -108,6 +115,7 @@ def main():
             dataFind = input("Введіть дані для пошуку: ")
             result = findOne(dataFind, param, book)
             console.print(result)
+
         elif command == "delete":
             name = input("Введіть ім'я контакту для взаємодії: ")
             record = book.find(name.lower())
@@ -126,17 +134,18 @@ def main():
                 if not param or param not in ["1", "2", "3", "4"]:
                     error_message("❌ Невірний параметр. Спробуйте ще раз.")
                     continue
+                
                 deleteOne(param, book, name)
                 if not name:
                     error_message("❌ Введіть ім'я контакту для видалення.")
                     continue
             else:
                 error_message(f"❌ Контакт {name} не знайдено.")
-        #  Oleksandr_add_notes
+
         elif command == "note":
             result = add_notes()
             info_message(result)
-            success_message(f"✅ Нотатка {name_note} успішно збережено!")
+            success_message(f"✅ Нотатка {result.name_note} успішно збережено!")
 
         elif command == "show-note":
             result = show_notes()
@@ -150,23 +159,7 @@ def main():
             show_help()
 
         else:
-            commands = [
-                "hello",
-                "add",
-                "phone",
-                "all",
-                "birthdays",
-                "find",
-                "delete",
-                "note",
-                "help",
-                "show-note",
-                "update-birthday",
-                "show-birthday",
-                "exit",
-                "update-phone",
-                "update-email",
-            ]
+            commands = COMMANDS
 
             matches = [(comm, len(set(comm) & set(command))) for comm in commands]
             best_match = max(matches, key=lambda x: x[1], default=None)
