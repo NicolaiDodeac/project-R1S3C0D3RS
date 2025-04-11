@@ -95,16 +95,21 @@ class AddressBook(UserDict):
 
         for record in self.data.values():
             if record.birthday:
-                bday = record.birthday.value.replace(year=today.year)
-                if bday < today:
-                    bday = bday.replace(year=today.year + 1)
-                if 0 <= (bday - today).days <= days:
-                    if bday.weekday() >= 5:
-                        bday += timedelta(days=(7 - bday.weekday()))
-                    upcoming.append(
-                        {
-                            "name": record.name.value,
-                            "congratulation_date": bday.strftime("%d.%m.%Y"),
-                        }
-                    )
+                original_birthday = record.birthday.value
+                bday_this_year = original_birthday.replace(year=today.year)
+
+                if bday_this_year < today:
+                    bday_this_year = bday_this_year.replace(year=today.year + 1)
+
+                if 0 <= (bday_this_year - today).days <= days:
+
+                    if bday_this_year.weekday() >= 5:
+                        bday_this_year += timedelta(days=(7 - bday_this_year.weekday()))
+
+                    upcoming.append({
+                        "name": record.name.value,
+                        "congratulation_date": bday_this_year.strftime("%d.%m.%Y"),
+                        "original_birthday": original_birthday
+                    })
+
         return upcoming
