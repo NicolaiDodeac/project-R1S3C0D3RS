@@ -54,10 +54,9 @@ def show_phone(args, book):
     record = book.find(name.lower())
     return (
         f"{name}: {'; '.join(p.value for p in record.phones)}"
-        if record
+        if record and record.phones
         else f"Контакт '{name}' не знайдено"
     )
-
 
 @input_error
 def show_all(book):
@@ -95,15 +94,6 @@ def add_birthday(args, book):
         return f"Додано день народження для {name}"
     return f"Контакт '{name}' не знайдено"
 
-
-# @input_error
-# def add_email(args, book):
-#     name, email = args
-#     record = book.find(name.lower())
-#     if record:
-#         record.add_email(email)
-#         return f"📧 Email для {name} оновлено: {email}"
-#     return f"Контакт '{name}' не знайдено"
 
 def add_email(args, book):
     name, email = args
