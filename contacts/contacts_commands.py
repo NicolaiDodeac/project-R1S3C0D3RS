@@ -3,6 +3,7 @@ from helpers.decorators import input_error
 from rich.console import Console
 from rich.table import Table
 from helpers.rich_output import success_message, error_message
+from datetime import datetime
 
 console = Console()
 
@@ -104,15 +105,29 @@ def show_birthday(args, book):
         else f"Немає дати народження"
     )
 
+def get_day_word(n):
+    return "день" if n == 1 else "дні" if 2 <= n <= 4 else "днів"
 
 @input_error
 def birthdays(args, book):
     days = int(args[0]) if args else 7
+    today = datetime.today().date()
     result = book.get_upcoming_birthdays(days=days)
-    return (
-        "\n".join(f"{i['name']}: {i['congratulation_date']}" for i in result)
-        or "Немає днів народження найближчим часом"
-    )
+
+    if not result:
+        return "Немає днів народження найближчим часом"
+
+    formatted = []
+    for item in result:
+        real_birthday = item["original_birthday"]
+        congratulation_date = datetime.strptime(item["congratulation_date"], "%d.%m.%Y").date()
+        delta_days = (congratulation_date - today).days
+        day_word = get_day_word(delta_days)
+        formatted.append(
+            f"{item['name']}: {item['original_birthday'].strftime('%d.%m.%Y')} — День народження через {delta_days} {day_word}"
+        )
+
+    return "\n".join(formatted)
 
 
 @input_error

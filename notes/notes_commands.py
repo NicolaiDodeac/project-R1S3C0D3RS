@@ -6,7 +6,7 @@ from rich.console import Console
 from rich.table import Table
 from helpers.rich_output import console
 
-console = Console()
+
 notes = load_notes()
 
 
@@ -49,4 +49,36 @@ def show_notes():
             note.date_created.strftime("%d.%m.%Y"),
         )
 
+    return table
+
+def find_note():
+    keyword = Prompt.ask("[bold green]Введіть ключове слово або #тег[/bold green]").lower()
+
+    found = []
+    for note in notes:
+        if (
+            keyword in note.name_note.lower()
+            or keyword in note.body_note.lower()
+            or (note.tag_note and keyword in note.tag_note.lower())
+        ):
+            found.append(note)
+
+    if not found:
+        return "🔍 За запитом нічого не знайдено."
+
+    table = Table(title=f"🔎 Результати пошуку за '{keyword}'", show_lines=True)
+    table.add_column("№", style="white", justify="center")
+    table.add_column("Назва", style="cyan", justify="center")
+    table.add_column("Текст", style="white", justify="center")
+    table.add_column("Тег", style="blue", justify="center")
+    table.add_column("Дата створення", style="green", justify="center")
+
+    for idx, note in enumerate(found, start=1):
+        table.add_row(
+            str(idx),
+            note.name_note,
+            note.body_note,
+            note.tag_note or "-",
+            note.date_created.strftime("%d.%m.%Y"),
+        )
     return table

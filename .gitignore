@@ -8,6 +8,7 @@ __pycache__/
 
 # ignore saved data
 *.pkl
+*.csv
 
 # Distribution / packaging
 .Python

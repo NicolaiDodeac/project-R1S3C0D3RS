@@ -20,7 +20,10 @@ def show_help():
     table.add_row("birthdays", "Показати дні народження на наступному тижні")
     table.add_row("find", "Пошук за якимось конкретною параметром")
     table.add_row("hello", "Привітатися з ботом")
+    table.add_row("find-note", "Пошук нотаток за ключем або тегом")
     table.add_row("exit / close", "Вийти з програми")
     table.add_row("update-email [name] [email] — додати або змінити email")
+
+
 
     console.print(table)

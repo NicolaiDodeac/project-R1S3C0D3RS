@@ -10,6 +10,7 @@ from rich.prompt import Prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from notes.notes_commands import add_notes, show_notes
+from notes.notes_commands import add_notes, show_notes, find_note
 
 
 def main():
@@ -139,6 +140,10 @@ def main():
 
         elif command == "show-note":
             result = show_notes()
+            info_message(result)
+
+        elif command == "find-note":
+            result = find_note()
             info_message(result)
 
         elif command == "help":
