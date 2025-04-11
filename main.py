@@ -14,6 +14,8 @@ from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from notes.notes_commands import add_notes, show_notes
 from helpers.autocomplete import get_user_command
 from helpers.handlers import handle_update_phone,handle_update_email, handle_show_birthday, handle_add_birthday, handle_add_phone
+from notes.notes_commands import add_notes, show_notes, find_note
+
 
 def main():
     book = load_data()
@@ -153,6 +155,10 @@ def main():
 
         elif command == "show-note":
             result = show_notes()
+            info_message(result)
+
+        elif command == "find-note":
+            result = find_note()
             info_message(result)
 
         elif command == "help":
