@@ -21,11 +21,9 @@ def show_help():
     table.add_row("all", "Показати всі контакти")
     table.add_row("find", "Пошук за якимось одним з параметрів")
     table.add_row("find-note", "Пошук нотаток за ключем або тегом")
-    table.add_row("delete", "Видалити контакт цілком чи окремий параметр ")
+    table.add_row("delete", "Видалити нотатку, контакт цілком чи окремий параметр")
+    table.add_row("note", "Створити нотатку")
+    table.add_row("change-note", "Змінити нотатку")
     table.add_row("exit / close", "Вийти з програми")
-   
-    
-
-
 
     console.print(table)

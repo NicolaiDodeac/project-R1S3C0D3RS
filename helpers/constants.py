@@ -1,5 +1,20 @@
 COMMANDS = [
-    "hello", "add", "phone", "add-phone", "all", "birthdays", "find", "delete", "note",
-    "help", "show-note", "update-birthday", "show-birthday", "exit",
-    "update-phone", "update-email"
+    "hello",
+    "add",
+    "phone",
+    "all",
+    "birthdays",
+    "find",
+    "delete",
+    "note",
+    "help",
+    "exit",
+    "add-phone",
+    "show-note",
+    "find-note",
+    "update-birthday",
+    "show-birthday",
+    "update-phone",
+    "update-email",
+    "change-note",
 ]
