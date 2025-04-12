@@ -12,7 +12,14 @@ from prompt_toolkit import prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
 from helpers.autocomplete import get_user_command
-from helpers.handlers import handle_update_phone,handle_update_email, handle_show_birthday, handle_add_birthday, handle_add_phone, handle_show_phone
+from helpers.handlers import (
+    handle_update_phone,
+    handle_update_email,
+    handle_show_birthday,
+    handle_add_birthday,
+    handle_add_phone,
+    handle_show_phone,
+)
 from notes.notes_commands import add_notes, show_notes, find_note, dell_note
 from helpers.constants import COMMANDS
 
@@ -20,9 +27,9 @@ from helpers.constants import COMMANDS
 def main():
     book = load_data()
     print_title("📔 Welcome to the assistant bot!")
-
+    show_help()
     while True:
-        print("[bold green](TAB для підказки)[/bold green]") 
+        print("[bold green](TAB для підказки)[/bold green]")
         user_input = get_user_command()
 
         # user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
@@ -92,7 +99,7 @@ def main():
             handle_update_email(book)
 
         elif command == "show-birthday":
-           handle_show_birthday(book)
+            handle_show_birthday(book)
 
         elif command == "birthdays":
             result = birthdays(args, book)
@@ -133,7 +140,7 @@ def main():
                 if not param or param not in ["1", "2", "3", "4"]:
                     error_message("❌ Невірний параметр. Спробуйте ще раз.")
                     continue
-                
+
                 deleteOne(param, book, name)
                 if not name:
                     error_message("❌ Введіть ім'я контакту для видалення.")
@@ -155,7 +162,7 @@ def main():
             info_message(result)
 
         elif command == "dell-note":
-           dell_note()
+            dell_note()
 
         elif command == "help":
             show_help()
