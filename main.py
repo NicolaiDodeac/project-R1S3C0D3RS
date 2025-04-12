@@ -11,10 +11,9 @@ from rich import print
 from prompt_toolkit import prompt
 from helpers.help_text import show_help
 from contacts.contact_flow import ask_name_and_phone, ask_birthday, ask_email
-from notes.notes_commands import add_notes, show_notes
 from helpers.autocomplete import get_user_command
 from helpers.handlers import handle_update_phone,handle_update_email, handle_show_birthday, handle_add_birthday, handle_add_phone, handle_show_phone
-from notes.notes_commands import add_notes, show_notes, find_note
+from notes.notes_commands import add_notes, show_notes, find_note, dell_note
 from helpers.constants import COMMANDS
 
 
@@ -154,6 +153,9 @@ def main():
         elif command == "find-note":
             result = find_note()
             info_message(result)
+
+        elif command == "dell-note":
+           dell_note()
 
         elif command == "help":
             show_help()

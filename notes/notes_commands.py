@@ -5,13 +5,21 @@ from storage.file_handler_notes import save_notes, load_notes
 from rich.console import Console
 from rich.table import Table
 from helpers.rich_output import console
+from helpers.rich_output import error_message, success_message, info_message
 
 
 notes = load_notes()
 
 
 def add_notes():
-    name_note = Prompt.ask("[bold green]Введіть назву нотатки[/bold green]")
+    while True:
+        name_note = Prompt.ask("[bold green]Введіть назву нотатки[/bold green]")
+        for note in notes: #Перевірка на унікальеість імені
+            if note.name_note.lower() == name_note.lower():
+                error_message (f"Нотатка з назвою {name_note} вже існує, введіть інше імя")
+                break
+        else:
+            break
     body_note = Prompt.ask("[bold blue]Введіть текст нотатки[/bold blue]")
     tag_note = Prompt.ask("[bold green]Введіть тег або 'skip'[/bold green]")
 
@@ -82,3 +90,20 @@ def find_note():
             note.date_created.strftime("%d.%m.%Y"),
         )
     return table
+
+def dell_note(): #видаляти нотатку модна по назві
+    keyword = Prompt.ask("[bold green]Введіть назву нотатки[/bold green]").lower()
+    for note in notes:
+        if keyword in note.name_note.lower():
+            confirm = Prompt.ask(f"[bold red]Ви точно хочете видалити '{note.name_note}'? (Y/N)[/bold red]")
+            if confirm.lower() == "y":
+                notes.remove(note)
+                save_notes(notes)
+                success_message(f"Нотатка з ім\'м {keyword} видалена зі списку нотаток")
+                return
+            else:
+                info_message("Видалення скасовано")
+                return
+    info_message(f"Нотатка з назвою {keyword} не існує")
+        
+             
