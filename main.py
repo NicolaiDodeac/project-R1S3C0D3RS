@@ -123,30 +123,45 @@ def main():
             console.print(result)
 
         elif command == "delete":
-            name = input("Введіть ім'я контакту для взаємодії: ")
-            record = book.find(name.lower())
-            if record:
-                table = Table(
-                    title="Доступні параметри для видалення:", show_lines=True
-                )
-                table.add_column("Номер команди", style="bold cyan", justify="left")
-                table.add_column("Опис", style="white", justify="left")
-                table.add_row("1", "Видалити цілий контакт")
-                table.add_row("2", "Видалити номер телефону")
-                table.add_row("3", "Видалити пошту")
-                table.add_row("4", "Видалити день народження")
-                console.print(table)
-                param = input("Введіть параметр для видалення: ")
-                if not param or param not in ["1", "2", "3", "4"]:
-                    error_message("❌ Невірний параметр. Спробуйте ще раз.")
-                    continue
+            table = Table(title="Доступні параметри для видалення:", show_lines=True)
+            table.add_column("Номер команди", style="bold cyan", justify="left")
+            table.add_column("Опис", style="white", justify="left")
+            table.add_row("1", "Видалити контакт або параметр контакту")
+            table.add_row("2", "Видалити нотатку")
+            console.print(table)
+            param = input("Введіть параметр для видалення: ")
+            if not param or param not in ["1", "2"]:
+                error_message("❌ Невірний параметр. Спробуйте ще раз.")
+                continue
+            if param == "1":
+                name = input("Введіть ім'я контакту для взаємодії: ")
+                record = book.find(name.lower())
+                if record:
+                    table = Table(
+                        title="Доступні параметри для видалення:", show_lines=True
+                    )
+                    table.add_column("Номер команди", style="bold cyan", justify="left")
+                    table.add_column("Опис", style="white", justify="left")
+                    table.add_row("1", "Видалити цілий контакт")
+                    table.add_row("2", "Видалити номер телефону")
+                    table.add_row("3", "Видалити пошту")
+                    table.add_row("4", "Видалити день народження")
 
-                deleteOne(param, book, name)
-                if not name:
-                    error_message("❌ Введіть ім'я контакту для видалення.")
-                    continue
-            else:
-                error_message(f"❌ Контакт {name} не знайдено.")
+                    console.print(table)
+                    param = input("Введіть параметр для видалення: ")
+                    if not param or param not in ["1", "2", "3", "4"]:
+                        error_message("❌ Невірний параметр. Спробуйте ще раз.")
+                        continue
+
+                    deleteOne(param, book, name)
+                    if not name:
+                        error_message("❌ Введіть ім'я контакту для видалення.")
+                        continue
+                else:
+                    error_message(f"❌ Контакт {name} не знайдено.")
+            elif param == "2":
+                dell_note()
+                success_message("✅ Нотатку успішно видалено!")
 
         elif command == "note":
             result = add_notes()
