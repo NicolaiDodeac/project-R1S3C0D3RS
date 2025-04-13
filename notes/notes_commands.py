@@ -105,5 +105,58 @@ def dell_note(): #видаляти нотатку модна по назві
                 info_message("Видалення скасовано")
                 return
     info_message(f"Нотатка з назвою {keyword} не існує")
+
+def change_note():
+    question = Prompt.ask("[bold green]За яким параметром будемо шукати нотатку? Натиcни за назвою - 1. За тегом - 2[/bold green]")
+    if question == "1":
+        answer_1 = Prompt.ask("[bold green]Введіть назву нотатки[/bold green]")
+        for note in notes:
+            if answer_1 in note.name_note.lower():
+                info_message(f"Знайдено нотатку з назвою: {note.name_note}")
+                new_body = Prompt.ask("Введіть новий текст нотатки:")
+                note.body_note = new_body
+                save_notes(notes)
+                success_message(f"Нотатка з ім\'м {answer_1} умпішно відредаговано")
+                return
+        info_message("Нотатки за такою назвою не існує. Ти можеш створти нову нотатку. Скористайся відповідною командою ")
+    
+    elif question == "2":
+        answer_2 = Prompt.ask("[bold green]Введіть тег починаючи з #[/bold green]")
+        result = []
+        for note in notes:
+            if note.tag_note and answer_2 == note.tag_note:
+                result.append(note)
         
-             
+        if not result:
+            info_message("Нотаток з таким тегом не знайдено.")
+            return
+        
+
+        # Виводимо знайдені нотатки в таблиці
+        table = Table(title="Знайдені нотатки", show_lines=True)
+        table.add_column("№", justify="center")
+        table.add_column("Назва", style="cyan")
+        table.add_column("Текст", style="white")
+
+        for idx, note in enumerate(result, start=1):
+            table.add_row(str(idx), note.name_note, note.body_note)
+
+        console.print(table)
+
+        # Запит номера нотатки для редагування
+        number = Prompt.ask("[bold green]Введіть номер нотатки для редагування:[/bold green]")
+
+        try:
+            note_to_edit = result[int(number) - 1]
+        except (ValueError, IndexError):
+            error_message("Некоректний номер нотатки.")
+            return
+
+        new_body = Prompt.ask("[bold green]Введіть новий текст нотатки:[/bold green]")
+        note_to_edit.body_note = new_body
+        save_notes(notes)
+        success_message(f"Нотатка з імʼям '{note_to_edit.name_note}' успішно відредагована!")
+
+    else:
+        error_message("Введено некоректний параметр. Спробуйте ще раз.")
+        return
