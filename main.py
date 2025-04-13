@@ -32,7 +32,6 @@ def main():
         print("[bold green](TAB для підказки)[/bold green]")
         user_input = get_user_command()
 
-        # user_input = Prompt.ask("[bold green]Введіть команду[/bold green]")
         command, args = parse_input(user_input)
 
         if command in ["exit", "close"]:
@@ -161,12 +160,11 @@ def main():
                     error_message(f"❌ Контакт {name} не знайдено.")
             elif param == "2":
                 dell_note()
-                success_message("✅ Нотатку успішно видалено!")
 
         elif command == "note":
             result = add_notes()
             info_message(result)
-            success_message(f"✅ Нотатка {result.name_note} успішно збережено!")
+            success_message(f"✅ Нотатку успішно збережено!")
 
         elif command == "show-note":
             result = show_notes()

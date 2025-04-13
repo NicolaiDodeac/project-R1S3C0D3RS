@@ -15,6 +15,8 @@ def handle_add_birthday(book):
             return
         else:
             error_message(result)
+            if "не знайдено" in result:
+                return
 
 
 def handle_show_birthday(book):
@@ -44,6 +46,8 @@ def handle_update_email(book):
             return
         else:
             error_message(result)
+            if "не знайдено" in result:
+                return
 
 def handle_add_phone(book):
     name = get_prompt(get_name_completer(book), "Введіть ім’я контакту, до якого додати номер:")

@@ -144,7 +144,7 @@ def change_note():
         console.print(table)
 
         # Запит номера нотатки для редагування
-        number = Prompt.ask("[bold green]Введіть номер нотатки для редагування:[/bold green]")
+        number = Prompt.ask("[bold green]Введіть номер нотатки для редагування[/bold green]")
 
         try:
             note_to_edit = result[int(number) - 1]
@@ -152,7 +152,7 @@ def change_note():
             error_message("Некоректний номер нотатки.")
             return
 
-        new_body = Prompt.ask("[bold green]Введіть новий текст нотатки:[/bold green]")
+        new_body = Prompt.ask("[bold green]Введіть новий текст нотатки[/bold green]")
         note_to_edit.body_note = new_body
         save_notes(notes)
         success_message(f"Нотатка з імʼям '{note_to_edit.name_note}' успішно відредагована!")
