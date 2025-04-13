@@ -20,7 +20,7 @@ from helpers.handlers import (
     handle_add_phone,
     handle_show_phone,
 )
-from notes.notes_commands import add_notes, show_notes, find_note, dell_note
+from notes.notes_commands import add_notes, show_notes, find_note, dell_note, change_note
 from helpers.constants import COMMANDS
 
 
@@ -178,6 +178,9 @@ def main():
 
         elif command == "dell-note":
             dell_note()
+
+        elif command == "change-note":
+            result = change_note()
 
         elif command == "help":
             show_help()
