@@ -5,7 +5,10 @@ from datetime import datetime
 
 FILENAME = os.path.join("storage", "data", "notes.csv")
 
+
 def save_notes(notes, filename=FILENAME):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)  # ✅ Гарантує шлях
+
     with open(filename, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["Назва", "Нотатка", "Тег", "Дата"])

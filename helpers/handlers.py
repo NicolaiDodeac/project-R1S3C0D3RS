@@ -59,3 +59,5 @@ def handle_add_phone(book):
             return
         else:
             error_message(result)
+            if "не знайдено" in result:
+                return
